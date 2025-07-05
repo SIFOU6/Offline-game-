@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>لعبة التسلسل الرقمي</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      padding-top: 50px;
+    }
+    #numbers {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      font-size: 24px;
+      padding: 10px;
+      width: 200px;
+      margin-top: 20px;
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 24px;
+      margin-top: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>لعبة التسلسل الرقمي</h1>
+  <p>تذكّر الأرقام التي ستظهر لمدة 3 ثوانٍ!</p>
+
+  <div id="numbers">جاري التحميل...</div>
+  <input type="text" id="userInput" placeholder="أدخل الأرقام هنا">
+  <br>
+  <button onclick="startGame()">ابدأ اللعبة</button>
+  <button onclick="checkAnswer()">تحقق من الإجابة</button>
+
+  <div id="result"></div>
+
+  <script>
+    let correctSequence = "";
+
+    function startGame() {
+      correctSequence = "";
+      for (let i = 0; i < 5; i++) {
+        correctSequence += Math.floor(Math.random() * 10);
+      }
+
+      document.getElementById("numbers").textContent = correctSequence;
+      document.getElementById("userInput").value = "";
+      document.getElementById("result").textContent = "";
+
+      setTimeout(() => {
+        document.getElementById("numbers").textContent = "أدخل التسلسل الآن!";
+      }, 3000);
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById("userInput").value;
+      const resultDiv = document.getElementById("result");
+
+      if (userAnswer === correctSequence) {
+        resultDiv.textContent = "مبروك! لقد فزت 🎉";
+        resultDiv.style.color = "green";
+      } else {
+        resultDiv.textContent = "خطأ! الجواب الصحيح هو: " + correctSequence;
+        resultDiv.style.color = "red";
+      }
+    }
+
+    // تسجيل الخدمة للعمل بدون إنترنت
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker مسجل'))
+        .catch((err) => console.log('❌ فشل تسجيل Service Worker:', err));
+    }
+  </script>
+
+</body>
+</html>
